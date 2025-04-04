@@ -1,0 +1,109 @@
+/* Full background image */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url("/images/Map.jpg");
+    /* ✅ Public path */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Main container */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: rgba(0, 0, 0, 0.395);
+    /* semi-transparent black */
+    padding: 30px;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Heading style */
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+/* Grid layout (2 columns) */
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Form group styles */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #f2f2f2;
+    color: #333;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #007bff;
+}
+
+/* Submit button full width bottom center */
+button {
+    grid-column: span 2;
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #007bff;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+.submitted-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #fff;
+}
+
+.submitted-section h2 {
+    text-align: center;
+    color: #00ffea;
+    margin: 10px 5px;
+}
+
+.submitted-section ul {
+    list-style: none;
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.submitted-section li {
+    margin-bottom: 8px;
+    margin:10px;
+    font-size: 20px;
+}
