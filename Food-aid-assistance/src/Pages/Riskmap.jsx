@@ -1,44 +1,32 @@
-import React, { useEffect, useState } from "react";
-import Plot from "react-plotly.js";
+import React from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const RiskMap = () => {
-    const [mapData, setMapData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const RiskMap = ({ apiResponse }) => {
+    if (!apiResponse || !apiResponse.latitude || !apiResponse.longitude) {
+        return <p>Waiting for location data...</p>;
+    }
 
-    useEffect(() => {
-        fetch("http://127.0.0.1:5000/get-risk-map")
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("Map API Response:", data);  // ✅ Debugging
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                setMapData(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching map data:", error);
-                setError(error.message);
-                setLoading(false);
-            });
-    }, []);
-
+    // ✅ Define marker colors based on risk level
+    const getColor = (riskLevel) => {
+        if (riskLevel === 0) return "green"; // Low Risk
+        if (riskLevel === 1) return "orange"; // Medium Risk
+        return "red"; // High Risk
+    };
 
     return (
-        <div className="map-container">
-            <h2>Food Insecurity Risk Map</h2>
-            {loading ? (
-                <p>Loading Map...</p>
-            ) : error ? (
-                <p>Error: {error}</p>
-            ) : mapData && mapData.data && mapData.layout ? (
-                <Plot data={mapData.data} layout={mapData.layout} />
-            ) : (
-                <p>No map data available.</p>
-            )}
-        </div>
+        <MapContainer center={[apiResponse.latitude, apiResponse.longitude]} zoom={7} style={{ height: "400px", width: "100%" }}>
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+            <Marker position={[apiResponse.latitude, apiResponse.longitude]}>
+                <Popup>
+                    <strong>{apiResponse.district}</strong> <br />
+                    Risk Level: <span style={{ color: getColor(apiResponse.predicted_risk) }}>
+                        {apiResponse.predicted_risk === 0 ? "Low" : apiResponse.predicted_risk === 1 ? "Medium" : "High"}
+                    </span>
+                </Popup>
+            </Marker>
+        </MapContainer>
     );
 };
 

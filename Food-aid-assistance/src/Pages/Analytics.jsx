@@ -4,6 +4,7 @@ import RiskMap from "./Riskmap";
 
 const Analytics = () => {
     const [formData, setFormData] = useState({
+        "District": "",
         "Crop_Production (Tonnes)": "",
         "Food_Price_Index": "",
         "Malnutrition_Rate (%)": "",
@@ -13,8 +14,8 @@ const Analytics = () => {
         "Dietary_Diversity_Score": "",
     });
 
-    const [submittedData, setSubmittedData] = useState(null);
     const [apiResponse, setApiResponse] = useState(null);
+    const [history, setHistory] = useState([]); // ✅ to track previous entries
 
     const handleChange = (e) => {
         setFormData({
@@ -25,7 +26,6 @@ const Analytics = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmittedData(formData);
 
         try {
             const response = await fetch("http://127.0.0.1:5000/predict-risk", {
@@ -35,18 +35,41 @@ const Analytics = () => {
                 },
                 body: JSON.stringify(formData),
             });
+
             const data = await response.json();
-            setApiResponse(data);
+            const newEntry = {
+                district: formData["District"],
+                ...data,
+            };
+
+            setApiResponse(newEntry);
+            setHistory((prev) => [...prev, newEntry]); // ✅ Add to history
         } catch (error) {
             console.error("Error fetching API:", error);
         }
     };
 
+    const handleDelete = (indexToDelete) => {
+        setHistory(history.filter((_, index) => index !== indexToDelete));
+    };
+
     return (
         <div className="container">
             <h2>Risk Prediction System</h2>
+
             <form onSubmit={handleSubmit}>
-                {Object.keys(formData).map((key, index) => (
+                <div className="form-group">
+                    <label>District Name:</label>
+                    <input
+                        type="text"
+                        name="District"
+                        value={formData["District"]}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                {Object.keys(formData).slice(1).map((key, index) => (
                     <div className="form-group" key={index}>
                         <label>{key}:</label>
                         <input
@@ -58,30 +81,34 @@ const Analytics = () => {
                         />
                     </div>
                 ))}
+
                 <button type="submit">Submit</button>
             </form>
 
-            {submittedData && (
-                <div className="submitted-section">
-                    <h2>Submitted Data</h2>
+            {apiResponse && (
+                <div className="response-section">
+                    <h3>Latest Prediction</h3>
+                    <p>District: <strong>{apiResponse.district}</strong></p>
+                    <p>Predicted Risk Level: <strong>{apiResponse.predicted_risk}</strong></p>
+                </div>
+            )}
+
+            {history.length > 0 && (
+                <div className="history-section">
+                    <h3>Submission History</h3>
                     <ul>
-                        {Object.entries(submittedData).map(([key, value], index) => (
+                        {history.map((item, index) => (
                             <li key={index}>
-                                <strong>{key}:</strong> {value}
+                                {item.district} - Risk Level: {item.predicted_risk}
+                                <button onClick={() => handleDelete(index)} style={{ marginLeft: "10px" }}>Delete</button>
                             </li>
                         ))}
                     </ul>
                 </div>
             )}
 
-            {apiResponse && (
-                <div className="response-section">
-                    <h2>API Response</h2>
-                    <p>Predicted Risk Level: <strong>{apiResponse.predicted_risk}</strong></p>
-                </div>
-            )}
-            <RiskMap />
-
+            {/* ✅ Map gets the latest prediction */}
+            <RiskMap apiResponse={apiResponse} />
         </div>
     );
 };

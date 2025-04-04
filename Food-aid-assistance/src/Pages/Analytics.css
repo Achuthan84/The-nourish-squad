@@ -19,7 +19,7 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
-/* Heading style */
+/* Heading */
 h2 {
     text-align: center;
     margin-bottom: 30px;
@@ -33,7 +33,7 @@ form {
     gap: 20px;
 }
 
-/* Form group styles */
+/* Form group */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -59,7 +59,7 @@ input:focus {
     box-shadow: 0 0 5px #007bff;
 }
 
-/* Submit button full width bottom center */
+/* Submit button full width */
 button {
     grid-column: span 2;
     margin-top: 20px;
@@ -79,7 +79,8 @@ button:hover {
     box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
 }
 
-.submitted-section {
+/* API Response section */
+.response-section {
     margin-top: 30px;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.1);
@@ -87,21 +88,77 @@ button:hover {
     color: #fff;
 }
 
-.submitted-section h2 {
+.response-section h2 {
     text-align: center;
     color: #00ffea;
     margin: 10px 5px;
 }
 
-.submitted-section ul {
-    list-style: none;
-    padding-left: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.response-section p {
+    font-size: 18px;
+    margin: 8px 0;
 }
 
-.submitted-section li {
-    margin-bottom: 8px;
-    margin: 10px;
-    font-size: 20px;
+/* History Section */
+.history-section {
+    margin: 30px 0;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+.history-section h3 {
+    text-align: center;
+    color: #00ffea;
+    margin-bottom: 15px;
+}
+
+/* Fix for history list wrapping */
+.history-list {
+    list-style: none;
+    padding-left: 0;
+    max-height: 300px;
+    /* Limit height */
+    overflow-y: auto;
+    /* Enable scroll */
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+}
+
+/* Each history item wraps properly */
+.history-list li {
+    background-color: rgba(255, 255, 255, 0.15);
+    margin: 10px 0;
+    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+
+.history-list li span {
+    flex: 1;
+}
+
+.history-list li button {
+    margin-left: 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.history-list li button:hover {
+    background-color: #b02a37;
 }
