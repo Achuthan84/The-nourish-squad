@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import "./RiskForm.css";
-
-const RiskForm = () => {
+import "./Analytics.css";
+const Analytics = () => {
     const [formData, setFormData] = useState({
         CropProduction: "",
         DietaryDiversity: "",
@@ -75,4 +74,4 @@ const RiskForm = () => {
     );
 };
 
-export default RiskForm;
+export default Analytics;
