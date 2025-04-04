@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import "./Analytics.css";
 import RiskMap from "./Riskmap";
 
+const districtList = [
+    "Chennai", "Madurai", "Coimbatore", "Trichy", "Salem",
+    "Sivagangai", "Erode", "Thanjavur", "Dindigul", "Tirunelveli"
+];
 const Analytics = () => {
     const [formData, setFormData] = useState({
         "District": "",
@@ -15,7 +19,7 @@ const Analytics = () => {
     });
 
     const [apiResponse, setApiResponse] = useState(null);
-    const [history, setHistory] = useState([]); // ✅ to track previous entries
+    const [history, setHistory] = useState([]);
 
     const handleChange = (e) => {
         setFormData({
@@ -43,7 +47,7 @@ const Analytics = () => {
             };
 
             setApiResponse(newEntry);
-            setHistory((prev) => [...prev, newEntry]); // ✅ Add to history
+            setHistory((prev) => [...prev, newEntry]);
         } catch (error) {
             console.error("Error fetching API:", error);
         }
@@ -96,19 +100,20 @@ const Analytics = () => {
             {history.length > 0 && (
                 <div className="history-section">
                     <h3>Submission History</h3>
-                    <ul>
+                    <ul className="history-list">
                         {history.map((item, index) => (
                             <li key={index}>
-                                {item.district} - Risk Level: {item.predicted_risk}
-                                <button onClick={() => handleDelete(index)} style={{ marginLeft: "10px" }}>Delete</button>
+                                <span><strong>District:</strong> {item.district}</span>
+                                <span><strong>Risk Level:</strong> {item.predicted_risk}</span>
+                                <button onClick={() => handleDelete(index)}>Delete</button>
                             </li>
                         ))}
                     </ul>
                 </div>
             )}
 
-            {/* ✅ Map gets the latest prediction */}
-            <RiskMap apiResponse={apiResponse} />
+            <RiskMap selectedDistrict={formData["District"]} />
+
         </div>
     );
 };

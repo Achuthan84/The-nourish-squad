@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url("/images/Map.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.form-container {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+}
+
+h2 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 6px;
+    text-transform: capitalize;
+}
+
+input {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 6px #00d9ff;
+}
+
+button {
+    grid-column: span 2;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #00d9ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #009ac4;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 217, 255, 0.4);
+}
+
+.result-section {
+    margin-top: 30px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.result-section h3 {
+    font-size: 22px;
+    color: #00ffea;
+    margin-bottom: 10px;
+}
+
+.result-section p {
+    font-size: 18px;
+    color: #ffffff;
+}
