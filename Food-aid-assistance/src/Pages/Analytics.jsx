@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import "./Analytics.css";
+import RiskMap from "./Riskmap";
+
 const Analytics = () => {
     const [formData, setFormData] = useState({
-        CropProduction: "",
-        DietaryDiversity: "",
-        EmploymentAgriculture: "",
-        FoodPriceIndex: "",
-        IncomePerCapita: "",
-        MalnutritionRate: "",
-        Undernourishment: "",
+        "Crop_Production (Tonnes)": "",
+        "Food_Price_Index": "",
+        "Malnutrition_Rate (%)": "",
+        "Income_Per_Capita (INR)": "",
+        "Employment_in_Agri (%)": "",
+        "Undernourishment (%)": "",
+        "Dietary_Diversity_Score": "",
     });
 
-    const [submittedData, setSubmittedData] = useState(null); // Store submitted data
+    const [submittedData, setSubmittedData] = useState(null);
+    const [apiResponse, setApiResponse] = useState(null);
 
     const handleChange = (e) => {
         setFormData({
@@ -20,22 +23,23 @@ const Analytics = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // ✅ Save form data into submittedData state
         setSubmittedData(formData);
 
-        // ✅ Reset form after submit
-        setFormData({
-            CropProduction: "",
-            DietaryDiversity: "",
-            EmploymentAgriculture: "",
-            FoodPriceIndex: "",
-            IncomePerCapita: "",
-            MalnutritionRate: "",
-            Undernourishment: "",
-        });
+        try {
+            const response = await fetch("http://127.0.0.1:5000/predict-risk", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await response.json();
+            setApiResponse(data);
+        } catch (error) {
+            console.error("Error fetching API:", error);
+        }
     };
 
     return (
@@ -44,7 +48,7 @@ const Analytics = () => {
             <form onSubmit={handleSubmit}>
                 {Object.keys(formData).map((key, index) => (
                     <div className="form-group" key={index}>
-                        <label>{key.replace(/([A-Z])/g, " $1").trim()}:</label>
+                        <label>{key}:</label>
                         <input
                             type="number"
                             name={key}
@@ -57,19 +61,27 @@ const Analytics = () => {
                 <button type="submit">Submit</button>
             </form>
 
-            {/* ✅ Display submitted data instantly */}
             {submittedData && (
                 <div className="submitted-section">
                     <h2>Submitted Data</h2>
                     <ul>
                         {Object.entries(submittedData).map(([key, value], index) => (
                             <li key={index}>
-                                <strong>{key.replace(/([A-Z])/g, " $1").trim()}:</strong> {value}
+                                <strong>{key}:</strong> {value}
                             </li>
                         ))}
                     </ul>
                 </div>
             )}
+
+            {apiResponse && (
+                <div className="response-section">
+                    <h2>API Response</h2>
+                    <p>Predicted Risk Level: <strong>{apiResponse.predicted_risk}</strong></p>
+                </div>
+            )}
+            <RiskMap />
+
         </div>
     );
 };
