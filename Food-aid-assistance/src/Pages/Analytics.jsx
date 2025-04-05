@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./Analytics.css";
-import RiskMap from "./Riskmap";
 
 const districtList = [
     "Chennai", "Madurai", "Coimbatore", "Trichy", "Salem",
     "Sivagangai", "Erode", "Thanjavur", "Dindigul", "Tirunelveli"
 ];
+
 const Analytics = () => {
     const [formData, setFormData] = useState({
         "District": "",
@@ -30,7 +30,6 @@ const Analytics = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             const response = await fetch("http://127.0.0.1:5000/predict-risk", {
                 method: "POST",
@@ -64,13 +63,19 @@ const Analytics = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>District Name:</label>
-                    <input
-                        type="text"
+                    <select
                         name="District"
                         value={formData["District"]}
                         onChange={handleChange}
                         required
-                    />
+                    >
+                        <option value="">-- Select District --</option>
+                        {districtList.map((district, idx) => (
+                            <option key={idx} value={district}>
+                                {district}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 {Object.keys(formData).slice(1).map((key, index) => (
@@ -112,8 +117,17 @@ const Analytics = () => {
                 </div>
             )}
 
-            <RiskMap selectedDistrict={formData["District"]} />
-
+            {/* Power BI Iframe */}
+            <div className="powerbi-frame">
+                <iframe
+                    title="Food Assistance Programs PSNA"
+                    width="100%"
+                    height="100%"
+                    src="https://app.powerbi.com/reportEmbed?reportId=009e6a1b-0c00-4728-8deb-6e1b0af6c6bb&autoAuth=true&ctid=3cb3c705-b71b-48b1-a3b7-13d46af55ff7"
+                    frameBorder="0"
+                    allowFullScreen={true}
+                ></iframe>
+            </div>
         </div>
     );
 };
